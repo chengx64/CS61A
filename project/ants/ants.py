@@ -110,6 +110,7 @@ class Ant(Insect):
     is_container = False
     # ADD CLASS ATTRIBUTES HERE
     is_doubled = False
+    blocks_path = True
 
     def __init__(self, health=1):
         """Create an Insect with a HEALTH quantity."""
@@ -537,7 +538,10 @@ class Bee(Insect):
         """Return True if this Bee cannot advance to the next Place."""
         # Special handling for NinjaAnt
         # BEGIN Problem Optional 1
-        return self.place.ant is not None
+        if self.place.ant is None or not self.place.ant.blocks_path:
+            return False
+        else:
+            return True
         # END Problem Optional 1
 
     def action(self, gamestate):
@@ -575,13 +579,17 @@ class NinjaAnt(Ant):
     damage = 1
     food_cost = 5
     # OVERRIDE CLASS ATTRIBUTES HERE
+    blocks_path = False
     # BEGIN Problem Optional 1
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem Optional 1
 
     def action(self, gamestate):
         # BEGIN Problem Optional 1
         "*** YOUR CODE HERE ***"
+        for bee in self.place.bees[:]:
+            bee.reduce_health(self.damage)         
+
         # END Problem Optional 1
 
 ############
@@ -631,8 +639,9 @@ class LaserAnt(ThrowerAnt):
     name = 'Laser'
     food_cost = 10
     # OVERRIDE CLASS ATTRIBUTES HERE
+    damage = 2
     # BEGIN Problem Optional 2
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem Optional 2
 
     def __init__(self, health=1):
@@ -641,12 +650,29 @@ class LaserAnt(ThrowerAnt):
 
     def insects_in_front(self):
         # BEGIN Problem Optional 2
-        return {}
+        place_tmp = self.place
+        distance = 0
+        result = {}
+        while True:
+            if place_tmp.ant != None:
+                result[place_tmp.ant] = distance
+            for bee in place_tmp.bees[:]:
+                result[bee] = distance
+
+            if place_tmp.entrance.is_hive:
+                break
+
+            distance += 1
+            place_tmp = place_tmp.entrance
+
+        result.pop(self)
+        return result
         # END Problem Optional 2
 
     def calculate_damage(self, distance):
         # BEGIN Problem Optional 2
-        return 0
+        damage_total = self.damage - 0.25 * distance - 0.0625 * self.insects_shot
+        return damage_total if damage_total > 0  else 0
         # END Problem Optional 2
 
     def action(self, gamestate):
