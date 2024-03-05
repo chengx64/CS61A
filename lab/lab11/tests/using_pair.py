@@ -5,7 +5,7 @@ test = {
     {
       'cases': [
         {
-          'answer': '5e9484882252923f12097bb0e47f89bb',
+          'answer': "Pair('+', Pair(Pair('-', Pair(2, Pair(4, nil))), Pair(6, Pair(8, nil))))",
           'choices': [
             "Pair('+', Pair('-', Pair(2, Pair(4, Pair(6, Pair(8, nil))))))",
             "Pair('+', Pair(Pair('-', Pair(2, Pair(4))), Pair(6, Pair(8))))",
@@ -14,12 +14,12 @@ test = {
             'None of these'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': 'Write out the Python expression that returns a `Pair` representing the given expression: (+ (- 2 4) 6 8)'
         },
         {
-          'answer': '4481655b9a856f48d68225e9a06ec7f8',
+          'answer': '+',
           'choices': [
             '-',
             '+',
@@ -29,12 +29,12 @@ test = {
             'None of these'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': 'What is the operator of the call expression?'
         },
         {
-          'answer': '2140336f31cbfbc5b302a1b1925091f1',
+          'answer': 'p.first',
           'choices': [
             'p',
             'p.first',
@@ -43,7 +43,7 @@ test = {
             'p.first.rest'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': r"""
           If the `Pair` you constructed in the previous part was bound to the name `p`,
@@ -51,7 +51,7 @@ test = {
           """
         },
         {
-          'answer': '9d19d47bff432a668c438a672b700ac3',
+          'answer': 'p.rest',
           'choices': [
             'p',
             'p.first',
@@ -60,7 +60,7 @@ test = {
             'p.first.rest'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': r"""
           If the `Pair` you constructed was bound to the name `p`, 
@@ -68,7 +68,7 @@ test = {
           """
         },
         {
-          'answer': 'c328983ff898e7607079d82dc6718233',
+          'answer': 'p.rest.first',
           'choices': [
             'p',
             'p.first',
@@ -77,12 +77,12 @@ test = {
             'p.first.rest'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': 'How would you retrieve only the first operand?'
         },
         {
-          'answer': '3778b12d84d9bfbbfb84155a3e14598e',
+          'answer': "Pair('-', Pair(2, Pair(4, nil)))",
           'choices': [
             "'-'",
             "'+'",
@@ -93,7 +93,7 @@ test = {
             'Pair(2, Pair(4, nil))'
           ],
           'hidden': False,
-          'locked': True,
+          'locked': False,
           'multiline': False,
           'question': 'What is the first operand of the call expression (prior to evaluation)?'
         }

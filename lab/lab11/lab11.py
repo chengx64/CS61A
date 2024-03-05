@@ -14,20 +14,20 @@ def calc_eval(exp):
     3
     """
     if isinstance(exp, Pair):
-        operator = ____________ # UPDATE THIS FOR Q2
-        operands = ____________ # UPDATE THIS FOR Q2
+        operator = exp.first # UPDATE THIS FOR Q2
+        operands = exp.rest  # UPDATE THIS FOR Q2
         if operator == 'and': # and expressions
             return eval_and(operands)
         elif operator == 'define': # define expressions
             return eval_define(operands)
         else: # Call expressions
-            return calc_apply(___________, ___________) # UPDATE THIS FOR Q2
+            return calc_apply(calc_eval(operator), operands) # UPDATE THIS FOR Q2
     elif exp in OPERATORS:   # Looking up procedures
         return OPERATORS[exp]
     elif isinstance(exp, int) or isinstance(exp, bool):   # Numbers and booleans
         return exp
-    elif _________________: # CHANGE THIS CONDITION FOR Q4
-        return _________________ # UPDATE THIS FOR Q4
+    elif exp in list(bindings.keys()): # CHANGE THIS CONDITION FOR Q4
+        return bindings[exp] # UPDATE THIS FOR Q4
 
 def calc_apply(op, args):
     return op(args)
@@ -52,6 +52,59 @@ def floor_div(args):
     20
     """
     # BEGIN SOLUTION Q2
+    result = args.first
+    divisor_part = args.rest
+
+    while divisor_part != nil:
+        divisor = divisor_part.first
+        if isinstance(divisor, Pair):
+            divisor = calc_eval(divisor)
+
+        result = result // divisor
+
+        divisor_part = divisor_part.rest
+
+    return result
+
+def addition(args):
+
+    if args == nil:
+        return 0
+    else:
+        return calc_eval(args.first) + addition(args.rest)
+    
+def subtraction(args):
+
+    result = args.first
+    sub_part = args.rest
+
+    while sub_part != nil:
+        sub = sub_part.first
+        if isinstance(sub, Pair):
+            sub = calc_eval(sub)
+
+        result = result - sub
+
+        sub_part = sub_part.rest
+
+    return result
+
+def multiplication(args):
+
+    result = args.first
+    mul_part = args.rest
+
+    while mul_part != nil:
+        mul = mul_part.first
+        if isinstance(mul, Pair):
+            mul = calc_eval(mul)
+
+        result = result * mul
+
+        mul_part = mul_part.rest
+
+    return result
+
 
 scheme_t = True   # Scheme's #t
 scheme_f = False  # Scheme's #f
@@ -74,6 +127,19 @@ def eval_and(expressions):
     True
     """
     # BEGIN SOLUTION Q3
+    if expressions == nil:
+        return True
+    
+    while expressions.rest != nil:
+        current = calc_eval(expressions.first)
+        if (not current) and not (0 is current):
+            return current
+        else:
+            expressions = expressions.rest
+    
+    return calc_eval(expressions.first)
+
+
 
 bindings = {}
 
@@ -93,6 +159,8 @@ def eval_define(expressions):
     2
     """
     # BEGIN SOLUTION Q4
+    bindings[expressions.first] = calc_eval(expressions.rest.first)
+    return expressions.first
 
 OPERATORS = { "//": floor_div, "+": addition, "-": subtraction, "*": multiplication, "/": division }
 
